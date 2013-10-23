@@ -1,18 +1,19 @@
 import sublime, sublime_plugin, random, re
 
-class MinionIpsum(sublime_plugin.TextCommand):
+class MinionIpsumCommand(sublime_plugin.TextCommand):
 
     def run(self, edit, paragraphNumber = 1):
 
         bananaArray = ["pepete","aaaaaah","uuuhhh","jiji","hahaha","jeje","wiiiii","bananaaaa","bappleees","potatoooo","para tu","la bodaaa","poulet tikka masala","daa","hana dul sae","belloo!","poopayee","tank yuuu!","me want bananaaa!","underweaaar","bee do bee do bee do","tulaliloo","ti aamoo!","tatata bala tu","baboiii","po kass","gelatooo","butt","chasy"]
 
-        for region in view.sel():  
-            if not region.empty():  
-            
-                last = re.search("(\d+)", region).group(0)
+        regions = self.view.sel()
 
-                print "will repeat " + last + " times"
-                text = self.generateFullText(last, bananaArray)
+        for region in regions:  
+            
+            if not region.empty():  
+                selection = self.view.substr(sublime.Region(region.begin()-20, region.end()))
+                last = re.search("\d+", selection).group(0)
+                text = self.generateFullText(int(last), bananaArray)
             else: 
                 text = self.generateFullText(paragraphNumber, bananaArray)
 
@@ -60,6 +61,3 @@ class MinionIpsum(sublime_plugin.TextCommand):
             oneLine=oneLine + ' ' + wordRandom;   
 
         return oneLine
-
-
-MinionIpsum().run()
